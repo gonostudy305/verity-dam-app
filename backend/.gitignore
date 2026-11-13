@@ -1,0 +1,8 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+data/
+
+# Re-embed run artefacts: contain catalog source URLs and internal SKUs
+reembed_*.jsonl

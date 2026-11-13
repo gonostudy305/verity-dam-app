@@ -1,0 +1,11 @@
+﻿# VerityDAM MCP server. Layers on top of the production worker's own
+# dependencies (`app.production_config` / `app.native_gateway` /
+# `app.shared_embedding_config` / `app.embedding_api` are reused as-is for
+# the image-search embedding path) plus the MCP SDK itself.
+#
+# Never installed into the worker image -- the worker Dockerfile installs
+# requirements.txt alone; this package ships in its own Dockerfile instead.
+-r requirements.txt
+mcp>=2.1.0
+pydantic>=2.7
+httpx>=0.27.0

@@ -1,0 +1,218 @@
+[
+  {
+    "description": "Clean Studio plate without people, high confidence, first reference for SKU",
+    "input": {
+      "context": "product",
+      "category": "Studio",
+      "hasPeople": false,
+      "skuConfidence": 92,
+      "explicitOptIn": false,
+      "hasActiveReferenceForSku": false,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": true,
+      "role": "HERO",
+      "curationStatus": "VERIFIED",
+      "matchEligible": true
+    }
+  },
+  {
+    "description": "Clean Studio plate without people, high confidence, SKU already has active reference",
+    "input": {
+      "context": "product",
+      "category": "Studio",
+      "hasPeople": false,
+      "skuConfidence": 85,
+      "explicitOptIn": false,
+      "hasActiveReferenceForSku": true,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": true,
+      "role": "ANGLE",
+      "curationStatus": "VERIFIED",
+      "matchEligible": true
+    }
+  },
+  {
+    "description": "Studio plate but has people present",
+    "input": {
+      "context": "product",
+      "category": "Studio",
+      "hasPeople": true,
+      "skuConfidence": 95,
+      "explicitOptIn": false,
+      "hasActiveReferenceForSku": false,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": false,
+      "role": "UNCLASSIFIED",
+      "curationStatus": "UNREVIEWED",
+      "matchEligible": false
+    }
+  },
+  {
+    "description": "Studio plate with low SKU confidence (< 80)",
+    "input": {
+      "context": "product",
+      "category": "Studio",
+      "hasPeople": false,
+      "skuConfidence": 72,
+      "explicitOptIn": false,
+      "hasActiveReferenceForSku": false,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": false,
+      "role": "UNCLASSIFIED",
+      "curationStatus": "UNREVIEWED",
+      "matchEligible": false
+    }
+  },
+  {
+    "description": "Studio plate with missing confidence (fail-closed)",
+    "input": {
+      "context": "product",
+      "category": "Studio",
+      "hasPeople": false,
+      "skuConfidence": null,
+      "explicitOptIn": false,
+      "hasActiveReferenceForSku": false,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": false,
+      "role": "UNCLASSIFIED",
+      "curationStatus": "UNREVIEWED",
+      "matchEligible": false
+    }
+  },
+  {
+    "description": "Marketing Banner category",
+    "input": {
+      "context": "marketing",
+      "category": "Banner",
+      "hasPeople": false,
+      "skuConfidence": 90,
+      "explicitOptIn": false,
+      "hasActiveReferenceForSku": false,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": false,
+      "role": "BANNER",
+      "curationStatus": "UNREVIEWED",
+      "matchEligible": false
+    }
+  },
+  {
+    "description": "Installation scene (Công trình) without opt-in",
+    "input": {
+      "context": "scene",
+      "category": "Công trình",
+      "hasPeople": false,
+      "skuConfidence": 88,
+      "explicitOptIn": false,
+      "hasActiveReferenceForSku": false,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": false,
+      "role": "INSTALLATION",
+      "curationStatus": "UNREVIEWED",
+      "matchEligible": false
+    }
+  },
+  {
+    "description": "Warranty photo (Bảo hành)",
+    "input": {
+      "context": "scene",
+      "category": "Bảo hành",
+      "hasPeople": false,
+      "skuConfidence": 85,
+      "explicitOptIn": false,
+      "hasActiveReferenceForSku": false,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": false,
+      "role": "REAL_WORLD",
+      "curationStatus": "UNREVIEWED",
+      "matchEligible": false
+    }
+  },
+  {
+    "description": "Showroom photo (Showroom)",
+    "input": {
+      "context": "scene",
+      "category": "Showroom",
+      "hasPeople": false,
+      "skuConfidence": 85,
+      "explicitOptIn": false,
+      "hasActiveReferenceForSku": false,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": false,
+      "role": "LIFESTYLE",
+      "curationStatus": "UNREVIEWED",
+      "matchEligible": false
+    }
+  },
+  {
+    "description": "Explicit reviewer opt-in overrides scene context and promotes to HERO",
+    "input": {
+      "context": "scene",
+      "category": "Công trình",
+      "hasPeople": false,
+      "skuConfidence": 65,
+      "explicitOptIn": true,
+      "hasActiveReferenceForSku": false,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": true,
+      "role": "INSTALLATION",
+      "curationStatus": "VERIFIED",
+      "matchEligible": true
+    }
+  },
+  {
+    "description": "Explicit reviewer opt-in overrides has_people and promotes to ANGLE",
+    "input": {
+      "context": "product",
+      "category": "Studio",
+      "hasPeople": true,
+      "skuConfidence": 90,
+      "explicitOptIn": true,
+      "hasActiveReferenceForSku": true,
+      "productLinkCount": 1
+    },
+    "expected": {
+      "isPromoted": true,
+      "role": "ANGLE",
+      "curationStatus": "VERIFIED",
+      "matchEligible": true
+    }
+  },
+  {
+    "description": "Asset with 2 product links, not promoted -> MULTI_PRODUCT",
+    "input": {
+      "context": "scene",
+      "category": "Công trình",
+      "hasPeople": false,
+      "skuConfidence": 80,
+      "explicitOptIn": false,
+      "hasActiveReferenceForSku": false,
+      "productLinkCount": 2
+    },
+    "expected": {
+      "isPromoted": false,
+      "role": "MULTI_PRODUCT",
+      "curationStatus": "UNREVIEWED",
+      "matchEligible": false
+    }
+  }
+]

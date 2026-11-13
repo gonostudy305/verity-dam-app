@@ -1,0 +1,17 @@
+# Production worker dependencies.
+# The worker runtime is PostgreSQL + Cloudflare R2 + Local OpenCLIP ONNX Runtime.
+python-dotenv
+requests
+psycopg2-binary
+pillow
+pillow-heif
+ImageHash
+boto3==1.43.89
+botocore==1.43.89
+cryptography
+onnxruntime
+numpy
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client

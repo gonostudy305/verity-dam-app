@@ -1,0 +1,8 @@
+# Dependencies for the internal embedding runtime (app.embedding_service).
+# Image embeddings use the SigLIP2 vision ONNX; no transformers/tokenizers needed.
+fastapi==0.115.12
+uvicorn==0.34.0
+pydantic
+onnxruntime==1.24.4
+numpy
+pillow

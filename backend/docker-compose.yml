@@ -1,0 +1,16 @@
+﻿services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: verity
+      POSTGRES_PASSWORD: verity_dev_only
+      POSTGRES_DB: verity_dam
+    ports:
+      # 5433 chứ không phải 5432 mặc định -- tránh đụng Postgres khác đã cài sẵn trên máy
+      - "5433:5432"
+    volumes:
+      - verity_media_pgdata:/var/lib/postgresql/data
+
+volumes:
+  verity_media_pgdata:

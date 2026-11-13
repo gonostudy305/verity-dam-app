@@ -1,0 +1,21 @@
+# Internal embedding runtime (verity-embedding-runtime), port 8801.
+# Model weights are volume-mounted read-only at /app/models, never baked into the image.
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+COPY requirements-embedding.txt ./
+RUN pip install --no-cache-dir -r requirements-embedding.txt
+
+RUN addgroup --system --gid 10003 verity-embed \
+    && adduser --system --uid 10003 --ingroup verity-embed --no-create-home verity-embed
+
+COPY --chown=verity-embed:verity-embed app/embedding_service.py app/siglip2_runtime.py ./app/
+RUN touch ./app/__init__.py && chown verity-embed:verity-embed ./app/__init__.py
+
+USER verity-embed
+EXPOSE 8801
+CMD ["python", "-m", "uvicorn", "app.embedding_service:app", "--host", "0.0.0.0", "--port", "8801"]

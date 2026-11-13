@@ -1,0 +1,27 @@
+﻿# Build stage for OpenCLIP Shadow Worker Sidecar
+FROM python:3.12-slim
+
+ARG VERITY_RELEASE_SHA=unknown
+LABEL org.opencontainers.image.revision="${VERITY_RELEASE_SHA}"
+
+WORKDIR /app
+
+# Install system dependencies for Pillow and image libraries
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install python dependencies
+COPY requirements.shadow.txt /app/requirements.shadow.txt
+RUN pip install --no-cache-dir -r /app/requirements.shadow.txt
+
+# Copy application modules
+COPY app/ /app/app/
+RUN printf '%s\n' "$VERITY_RELEASE_SHA" > /app/RELEASE_SHA
+
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python", "-m", "app.shadow_worker", "--sample-rate", "1.0"]

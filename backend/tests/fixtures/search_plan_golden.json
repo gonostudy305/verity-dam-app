@@ -1,0 +1,1008 @@
+{
+  "version": 1,
+  "description": "Deterministic SearchPlan cross-language golden contract. `shared` (intent/confidence/tokens/entities) is the ground truth produced by backend/search_intelligence (query_classifier + entity_extractor + vocabulary) and MUST match on both the Python authority and the TS buildSearchPlan mirror. `ts_only` is the TS serving-layer's derived output; only the TS test asserts it (Python does not model hasPeople/route/semanticEligible).",
+  "source_of_truth": "backend/search_intelligence/{query_classifier,entity_extractor,vocabulary}.py",
+  "shared_fields": [
+    "intent",
+    "confidence",
+    "tokens",
+    "entities"
+  ],
+  "ts_only_fields": [
+    "semanticEligible",
+    "route",
+    "isMetadataOnly",
+    "hasSceneContext",
+    "softTerms",
+    "hardConstraints",
+    "negations"
+  ],
+  "families": [
+    {
+      "id": 1,
+      "name": "Exact SKU",
+      "cases": [
+        {
+          "query": "HR-21",
+          "shared": {
+            "intent": "EXACT_SKU",
+            "confidence": 1.0,
+            "tokens": [
+              "hr-21"
+            ],
+            "entities": {
+              "skus": [
+                "HR-21"
+              ],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": false,
+            "route": "EXACT_FAST_PATH",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {
+              "sku": "HR-21"
+            },
+            "negations": []
+          }
+        },
+        {
+          "query": "DEMO-004",
+          "shared": {
+            "intent": "EXACT_SKU",
+            "confidence": 1.0,
+            "tokens": [
+              "demo-004"
+            ],
+            "entities": {
+              "skus": [
+                "DEMO-004"
+              ],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": false,
+            "route": "EXACT_FAST_PATH",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {
+              "sku": "DEMO-004"
+            },
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Complex-punctuation SKU",
+      "cases": [
+        {
+          "query": "PX-80x(8MP+2MP,4mm)",
+          "shared": {
+            "intent": "EXACT_SKU",
+            "confidence": 1.0,
+            "tokens": [
+              "px-80x",
+              "8mp",
+              "2mp",
+              "4mm"
+            ],
+            "entities": {
+              "skus": [
+                "PX-80x(8MP+2MP,4mm)"
+              ],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": false,
+            "route": "EXACT_FAST_PATH",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {
+              "sku": "PX-80x(8MP+2MP,4mm)"
+            },
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Brand + Model",
+      "cases": [
+        {
+          "query": "Acme M100",
+          "shared": {
+            "intent": "BRAND_PRODUCT",
+            "confidence": 0.75,
+            "tokens": [
+              "acme",
+              "m100"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [
+                "Acme"
+              ],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": false,
+            "route": "BASELINE_L0",
+            "isMetadataOnly": true,
+            "hasSceneContext": false,
+            "softTerms": [
+              "Acme"
+            ],
+            "hardConstraints": {},
+            "negations": []
+          }
+        },
+        {
+          "query": "Eden C6N",
+          "shared": {
+            "intent": "BRAND_PRODUCT",
+            "confidence": 0.75,
+            "tokens": [
+              "eden",
+              "c6n"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [
+                "EDEN"
+              ],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": false,
+            "route": "BASELINE_L0",
+            "isMetadataOnly": true,
+            "hasSceneContext": false,
+            "softTerms": [
+              "EDEN"
+            ],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Product + Scene",
+      "cases": [
+        {
+          "query": "khóa cửa chính",
+          "shared": {
+            "intent": "SCENE_USE_CASE",
+            "confidence": 0.85,
+            "tokens": [
+              "khóa",
+              "cửa",
+              "chính"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [
+                "Product_Line_A"
+              ],
+              "spaces": [
+                "Cửa chính"
+              ],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": true,
+            "softTerms": [
+              "Cửa chính",
+              "Product_Line_A"
+            ],
+            "hardConstraints": {},
+            "negations": []
+          }
+        },
+        {
+          "query": "robot hút bụi phòng khách",
+          "shared": {
+            "intent": "SCENE_USE_CASE",
+            "confidence": 0.85,
+            "tokens": [
+              "robot",
+              "hút",
+              "bụi",
+              "phòng",
+              "khách"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [
+                "Product_Line_C"
+              ],
+              "spaces": [
+                "Phòng khách"
+              ],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": true,
+            "softTerms": [
+              "Phòng khách",
+              "Product_Line_C"
+            ],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Accented Vietnamese",
+      "cases": [
+        {
+          "query": "đèn trần phòng khách",
+          "shared": {
+            "intent": "SCENE_USE_CASE",
+            "confidence": 0.8,
+            "tokens": [
+              "đèn",
+              "trần",
+              "phòng",
+              "khách"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [
+                "Phòng khách"
+              ],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": true,
+            "softTerms": [
+              "Phòng khách"
+            ],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Unaccented Vietnamese",
+      "cases": [
+        {
+          "query": "den tran phong khach",
+          "shared": {
+            "intent": "SCENE_USE_CASE",
+            "confidence": 0.8,
+            "tokens": [
+              "den",
+              "tran",
+              "phong",
+              "khach"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [
+                "Phòng khách"
+              ],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": true,
+            "softTerms": [
+              "Phòng khách"
+            ],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Mixed Vietnamese + English",
+      "cases": [
+        {
+          "query": "setup đèn thông minh",
+          "shared": {
+            "intent": "MIXED_VI_EN",
+            "confidence": 0.6,
+            "tokens": [
+              "setup",
+              "đèn",
+              "thông",
+              "minh"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Scene only",
+      "cases": [
+        {
+          "query": "phòng ngủ ấm cúng",
+          "shared": {
+            "intent": "SCENE_USE_CASE",
+            "confidence": 0.8,
+            "tokens": [
+              "phòng",
+              "ngủ",
+              "ấm",
+              "cúng"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [
+                "Phòng ngủ"
+              ],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": true,
+            "softTerms": [
+              "Phòng ngủ"
+            ],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Explicit no-people (hard negation)",
+      "cases": [
+        {
+          "query": "khóa thông minh không có người",
+          "shared": {
+            "intent": "PRODUCT_CATEGORY",
+            "confidence": 0.85,
+            "tokens": [
+              "khóa",
+              "thông",
+              "minh",
+              "không",
+              "có",
+              "người"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [
+                "Product_Line_A"
+              ],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [
+              "Product_Line_A"
+            ],
+            "hardConstraints": {
+              "hasPeople": false
+            },
+            "negations": [
+              {
+                "constraint": "hasPeople",
+                "source": "natural_language",
+                "matchedText": "không có người",
+                "confidence": 1.0,
+                "isHard": true
+              }
+            ]
+          }
+        },
+        {
+          "query": "không có người",
+          "shared": {
+            "intent": "UNKNOWN",
+            "confidence": 0.3,
+            "tokens": [
+              "không",
+              "có",
+              "người"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {
+              "hasPeople": false
+            },
+            "negations": [
+              {
+                "constraint": "hasPeople",
+                "source": "natural_language",
+                "matchedText": "không có người",
+                "confidence": 1.0,
+                "isHard": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Metadata intent",
+      "note": "The authority has NO facebook/usage vocabulary, so a true metadata query classifies as MIXED_VI_EN (accented + ASCII token), NOT a dedicated metadata intent. Real metadata-intent detection is a later-phase concern; V1 does not fake it.",
+      "cases": [
+        {
+          "query": "chưa dùng Facebook",
+          "shared": {
+            "intent": "MIXED_VI_EN",
+            "confidence": 0.6,
+            "tokens": [
+              "chưa",
+              "dùng",
+              "facebook"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Ambiguous negation (stays soft)",
+      "cases": [
+        {
+          "query": "không phải Acme",
+          "shared": {
+            "intent": "BRAND_PRODUCT",
+            "confidence": 0.75,
+            "tokens": [
+              "không",
+              "phải",
+              "acme"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [
+                "Acme"
+              ],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": false,
+            "route": "BASELINE_L0",
+            "isMetadataOnly": true,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {},
+            "negations": [
+              {
+                "constraint": "brand:Acme",
+                "source": "natural_language",
+                "matchedText": "Acme",
+                "confidence": 0.5,
+                "isHard": false
+              }
+            ]
+          }
+        },
+        {
+          "query": "không cần khóa nổi bật",
+          "shared": {
+            "intent": "PRODUCT_CATEGORY",
+            "confidence": 0.85,
+            "tokens": [
+              "không",
+              "cần",
+              "khóa",
+              "nổi",
+              "bật"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [
+                "Product_Line_A"
+              ],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {},
+            "negations": [
+              {
+                "constraint": "category:Product_Line_A",
+                "source": "natural_language",
+                "matchedText": "Product_Line_A",
+                "confidence": 0.5,
+                "isHard": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Negative brand (stays soft)",
+      "cases": [
+        {
+          "query": "không lấy Tera",
+          "shared": {
+            "intent": "BRAND_PRODUCT",
+            "confidence": 0.75,
+            "tokens": [
+              "không",
+              "lấy",
+              "tera"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [
+                "Tera"
+              ],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": false,
+            "route": "BASELINE_L0",
+            "isMetadataOnly": true,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {},
+            "negations": [
+              {
+                "constraint": "brand:Tera",
+                "source": "natural_language",
+                "matchedText": "Tera",
+                "confidence": 0.5,
+                "isHard": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Typo / spelling variation (no fuzzy correction here)",
+      "cases": [
+        {
+          "query": "acme d10",
+          "shared": {
+            "intent": "BRAND_PRODUCT",
+            "confidence": 0.75,
+            "tokens": [
+              "acme",
+              "d10"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [
+                "Acme"
+              ],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": false,
+            "route": "BASELINE_L0",
+            "isMetadataOnly": true,
+            "hasSceneContext": false,
+            "softTerms": [
+              "Acme"
+            ],
+            "hardConstraints": {},
+            "negations": []
+          }
+        },
+        {
+          "query": "khoas cua",
+          "shared": {
+            "intent": "UNKNOWN",
+            "confidence": 0.3,
+            "tokens": [
+              "khoas",
+              "cua"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Natural language / descriptive VN",
+      "note": "Rule 6 (MIXED_VI_EN) precedes rule 7 (NATURAL_LANGUAGE): accented VN containing ANY bare-ASCII syllable (e.g. 'cao') classifies MIXED. A purely-accented multiword query reaches NATURAL_LANGUAGE.",
+      "cases": [
+        {
+          "query": "ảnh chụp góc nghiêng căn hộ cao cấp",
+          "shared": {
+            "intent": "MIXED_VI_EN",
+            "confidence": 0.6,
+            "tokens": [
+              "ảnh",
+              "chụp",
+              "góc",
+              "nghiêng",
+              "căn",
+              "hộ",
+              "cao",
+              "cấp"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {},
+            "negations": []
+          }
+        },
+        {
+          "query": "phòng ốc rộng rãi thoáng đãng",
+          "shared": {
+            "intent": "NATURAL_LANGUAGE",
+            "confidence": 0.5,
+            "tokens": [
+              "phòng",
+              "ốc",
+              "rộng",
+              "rãi",
+              "thoáng",
+              "đãng"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Zero-result",
+      "cases": [
+        {
+          "query": "xyz123nonexistent",
+          "shared": {
+            "intent": "UNKNOWN",
+            "confidence": 0.3,
+            "tokens": [
+              "xyz123nonexistent"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Injection-ish / special syntax",
+      "note": "SQL-ish syntax is defanged to plain word tokens; no hard SKU constraint is ever injected.",
+      "cases": [
+        {
+          "query": "sku:' or 1=1; --",
+          "shared": {
+            "intent": "NATURAL_LANGUAGE",
+            "confidence": 0.5,
+            "tokens": [
+              "sku",
+              "or",
+              "1",
+              "1"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Attribute / feature",
+      "cases": [
+        {
+          "query": "vân tay zigbee",
+          "shared": {
+            "intent": "ATTRIBUTE_FEATURE",
+            "confidence": 0.8,
+            "tokens": [
+              "vân",
+              "tay",
+              "zigbee"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [],
+              "spaces": [],
+              "installationContexts": [],
+              "features": [
+                "vân tay"
+              ],
+              "protocols": [
+                "zigbee"
+              ]
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": false,
+            "softTerms": [
+              "vân tay",
+              "zigbee"
+            ],
+            "hardConstraints": {},
+            "negations": []
+          }
+        },
+        {
+          "query": "camera chống nước ngoài trời",
+          "shared": {
+            "intent": "SCENE_USE_CASE",
+            "confidence": 0.85,
+            "tokens": [
+              "camera",
+              "chống",
+              "nước",
+              "ngoài",
+              "trời"
+            ],
+            "entities": {
+              "skus": [],
+              "brands": [],
+              "categories": [
+                "Product_Line_B"
+              ],
+              "spaces": [],
+              "installationContexts": [
+                "ngoài trời"
+              ],
+              "features": [],
+              "protocols": []
+            }
+          },
+          "ts_only": {
+            "semanticEligible": true,
+            "route": "HYBRID_INTELLIGENCE",
+            "isMetadataOnly": false,
+            "hasSceneContext": true,
+            "softTerms": [
+              "Product_Line_B",
+              "ngoài trời"
+            ],
+            "hardConstraints": {},
+            "negations": []
+          }
+        }
+      ]
+    }
+  ]
+}

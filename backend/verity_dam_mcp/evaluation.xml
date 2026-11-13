@@ -1,0 +1,74 @@
+<!--
+verity_media_mcp evaluation set (mcp-builder skill, Phase 4).
+
+Caveat, matching docs/mcp-server.md's "What has actually been verified": this
+machine has no DATABASE_URL/R2 credentials configured, so these questions and
+answers are derived from the tool contracts in server.py/models.py/gateway.py
+(code-level, stable facts) rather than from exploring live production data.
+Each answer was checked by reading the cited source, not by calling the live
+tools. Re-verify against live data before trusting this as a regression
+suite for anything data-dependent (e.g. "how many assets are in category X").
+-->
+<evaluation>
+  <qa_pair>
+    <question>Using the verity_media_mcp tools, at how many characters does a media_list_library or media_search_by_image text response get truncated (with a "narrow the query or use pagination" note appended) before reaching the agent?</question>
+    <answer>25000</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>What is the minimum account role (of viewer, contributor, reviewer, admin) that can successfully call media_upload_asset?</question>
+    <answer>contributor</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In bytes, what is the maximum video file size media_upload_asset will accept before rejecting the upload?</question>
+    <answer>209715200</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In bytes, what is the maximum photo file size media_upload_asset will accept before rejecting the upload?</question>
+    <answer>52428800</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>If you call media_search_by_image with neither media_asset_id nor image_base64 set, what exact error message does the tool's input validation raise?</question>
+    <answer>Provide exactly one of media_asset_id or image_base64, not both and not neither.</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>List the five crop aspect-ratio preset_id values media_save_crop accepts, comma-separated in the order they appear in the tool's validation set.</question>
+    <answer>1:1, 9:16, 16:9, 4:5, free</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Between media_resolve_review_item and media_update_metadata, which one is allowed to change an asset's sku field via its patch parameter?</question>
+    <answer>media_resolve_review_item</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>When media_resolve_review_item approves a review item whose corrections mark sku as a correction (corrections={"sku": true}), and the asset already has a global embedding in the active production space, which database table receives the new or updated row that makes that SKU eligible for future exact-match reference lookups?</question>
+    <answer>sku_references</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>What HTTP header does the media_search tool send to the internal Next.js search endpoint to identify which user is making the request?</question>
+    <answer>x-actor-user-id</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>media_list_library's include_deleted flag is restricted to exactly one account role. Which role?</question>
+    <answer>admin</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>What is the minimum account role (of viewer, contributor, reviewer, admin) required to call media_record_usage?</question>
+    <answer>contributor</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>On what numeric integer scale does media_evaluate_image_fit grade the relevance of an image to article content?</question>
+    <answer>0 to 3</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>If an AI Vision API call fails or times out during media_evaluate_image_fit, what fit_grade is returned under the fail-closed design?</question>
+    <answer>0</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Which PostgreSQL table stores the audit records intercepted by AuditMiddleware for every MCP tool call?</question>
+    <answer>mcp_tool_call_log</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>When calling media_find_best_image_for_post without specifying search_query, from which parameter does the tool derive its retrieval query?</question>
+    <answer>post_text</answer>
+  </qa_pair>
+</evaluation>
+

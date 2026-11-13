@@ -1,0 +1,8 @@
+# Personal local CLIP profile only. Never use this environment for the
+# production worker or to write vectors to production PostgreSQL.
+#
+# Builds on the operator tooling for offline embedding experiments only.
+-r requirements-tools.txt
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+sentence-transformers

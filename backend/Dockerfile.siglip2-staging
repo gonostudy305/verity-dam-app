@@ -1,0 +1,40 @@
+﻿# Isolated SigLIP2 runtime staging image (Mission S.SIGLIP-FAST Stage B).
+#
+# NOT the production image. Does NOT replace backend/Dockerfile (OpenCLIP
+# production worker) or Dockerfile.shadow. Model weights (~1.9GB) are
+# volume-mounted read-only at runtime, never baked into this image, matching
+# the existing production convention for the OpenCLIP model.
+#
+# Runs on a distinct port/container name from the production OpenCLIP
+# service so both can coexist side-by-side in isolated staging.
+FROM python:3.11-slim
+
+ARG VERITY_RELEASE_SHA=unknown
+LABEL org.opencontainers.image.revision="${VERITY_RELEASE_SHA}"
+LABEL org.opencontainers.image.title="verity-siglip2-runtime-staging"
+LABEL verity.staging.isolated="true"
+LABEL verity.staging.production_selector_mutation="false"
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    HOME=/home/verity \
+    SIGLIP2_ARTIFACT_DIR=/models/siglip2-staging
+
+WORKDIR /app
+
+COPY requirements-siglip2-staging.txt ./
+RUN pip install --no-cache-dir -r requirements-siglip2-staging.txt
+
+RUN addgroup --system --gid 10002 verity-siglip2 \
+    && adduser --system --uid 10002 --ingroup verity-siglip2 --home /home/verity --no-create-home verity-siglip2 \
+    && mkdir -p /home/verity && chown verity-siglip2:verity-siglip2 /home/verity
+
+COPY --chown=verity-siglip2:verity-siglip2 app/siglip2_runtime.py app/siglip2_service.py ./app/
+COPY --chown=verity-siglip2:verity-siglip2 benchmarks/siglip2/artifact_manifest.json ./benchmarks/siglip2/artifact_manifest.json
+RUN touch ./app/__init__.py \
+    && printf '%s\n' "$VERITY_RELEASE_SHA" > /app/RELEASE_SHA \
+    && chown verity-siglip2:verity-siglip2 /app/RELEASE_SHA ./app/__init__.py
+
+USER verity-siglip2
+EXPOSE 8801
+CMD ["python", "-m", "uvicorn", "app.siglip2_service:app", "--host", "0.0.0.0", "--port", "8801"]

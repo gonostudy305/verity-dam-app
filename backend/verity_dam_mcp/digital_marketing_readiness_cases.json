@@ -1,0 +1,214 @@
+{
+  "suite": "verity-media-mcp-digital-marketing-readiness-v1",
+  "version": 1,
+  "purpose": "Machine-readable UAT manifest for evaluating whether VerityDAM MCP is ready for digital-marketing agents.",
+  "verdict_rules": {
+    "critical_must_pass": true,
+    "high_pass_rate_min": 0.9,
+    "medium_pass_rate_min": 0.8,
+    "unsafe_exact_product_substitutions_max": 0
+  },
+  "cases": [
+    {
+      "id": "DM-01",
+      "priority": "critical",
+      "mode": "production_read_only",
+      "goal": "Exact product retrieval is safe.",
+      "tools": ["media_search"],
+      "input_template": {"query": "{{exact_product_or_sku}}", "limit": 5},
+      "assertions": [
+        "results is not empty",
+        "results[0] matches expected product identity",
+        "results[0].product_safety.safe_for_exact_product_use is true",
+        "no wrong sibling model is labelled exact-safe"
+      ],
+      "human_review": true
+    },
+    {
+      "id": "DM-05",
+      "priority": "critical",
+      "mode": "production_read_only",
+      "goal": "Wrong-but-visually-similar product does not pass as exact product.",
+      "tools": ["media_search", "media_evaluate_image_fit"],
+      "input_template": {"product_hint": "{{expected_product}}", "media_asset_id": "{{known_wrong_similar_asset}}", "channel": "facebook", "within_days": 14},
+      "assertions": [
+        "wrong asset is not exact-product safe",
+        "fit_grade <= 1 when product mismatch is material",
+        "product_match.matched is false or rationale explicitly rejects identity"
+      ],
+      "human_review": true
+    },
+    {
+      "id": "DM-06",
+      "priority": "critical",
+      "mode": "production_read_only",
+      "goal": "Absent products do not produce hallucinated exact matches.",
+      "tools": ["media_search"],
+      "input_template": {"query": "{{known_absent_product}}", "limit": 5},
+      "assertions": [
+        "no result claims safe exact-product identity for the absent SKU/model"
+      ],
+      "human_review": false
+    },
+    {
+      "id": "DM-08",
+      "priority": "critical",
+      "mode": "production_read_only",
+      "goal": "Clearly irrelevant imagery is rejected by image-fit.",
+      "tools": ["media_evaluate_image_fit"],
+      "input_template": {"article_text": "{{product_post}}", "media_asset_id": "{{irrelevant_asset}}", "channel": "facebook", "product_hint": "{{expected_product}}"},
+      "assertions": ["fit_grade <= 1"],
+      "human_review": true
+    },
+    {
+      "id": "DM-10",
+      "priority": "critical",
+      "mode": "controlled_write",
+      "goal": "Never-used qualifying creative beats recently used creative.",
+      "tools": ["media_find_best_image_for_post", "media_record_usage", "media_find_best_image_for_post"],
+      "setup": "Use a product family with at least two qualifying candidates. Record one candidate on the target test channel before the second find call.",
+      "assertions": [
+        "best_pick is not null",
+        "recent candidate is marked already_used_recently",
+        "a qualifying never-used candidate wins while one exists",
+        "best_pick.asset_id == ranked_candidates[0].asset_id"
+      ],
+      "human_review": false
+    },
+    {
+      "id": "DM-11",
+      "priority": "critical",
+      "mode": "controlled_write",
+      "goal": "All-recent candidate pool falls back to LRU rather than null.",
+      "tools": ["media_find_best_image_for_post", "media_record_usage"],
+      "setup": "Make every qualifying candidate recent on the same dedicated UAT channel with distinct timestamps.",
+      "assertions": [
+        "best_pick is not null",
+        "best_pick has the oldest last_used_at among qualifying recent candidates"
+      ],
+      "human_review": false
+    },
+    {
+      "id": "DM-12",
+      "priority": "high",
+      "mode": "production_read_only",
+      "goal": "Rotation can be explicitly disabled.",
+      "tools": ["media_find_best_image_for_post"],
+      "input_template": {"post_text": "{{post_text}}", "product_hint": "{{product}}", "channel": "facebook", "exclude_used_within_days": 0, "candidate_count": 5, "min_fit_grade": 2},
+      "assertions": [
+        "best_pick is null only when no candidate meets min_fit_grade",
+        "when best_pick exists it equals ranked_candidates[0]",
+        "selection order is not demoted by usage recency"
+      ],
+      "human_review": false
+    },
+    {
+      "id": "DM-13",
+      "priority": "critical",
+      "mode": "controlled_write",
+      "goal": "Usage freshness is isolated by channel.",
+      "tools": ["media_record_usage", "media_find_best_image_for_post"],
+      "setup": "Record target asset on facebook, then evaluate/search same asset for website.",
+      "assertions": [
+        "facebook view marks the asset recent",
+        "website view does not mark facebook usage as recent",
+        "website total_usage_count excludes facebook-only usage"
+      ],
+      "human_review": false
+    },
+    {
+      "id": "DM-14",
+      "priority": "critical",
+      "mode": "agent_orchestration",
+      "goal": "Usage is recorded only after external publish succeeds.",
+      "tools": ["media_find_best_image_for_post", "media_record_usage"],
+      "setup": "Run one simulated publish failure and one simulated publish success in the agent layer.",
+      "assertions": [
+        "failed publish causes zero media_record_usage calls",
+        "successful publish causes exactly one media_record_usage call after success"
+      ],
+      "human_review": false
+    },
+    {
+      "id": "DM-16",
+      "priority": "critical",
+      "mode": "staging_rbac",
+      "goal": "Asset visibility respects role and permission boundaries.",
+      "tools": ["media_search", "media_list_library", "media_get_asset"],
+      "setup": "Use one public asset and one internal-only asset with callers of different roles where supported.",
+      "assertions": [
+        "public-only search returns no internal asset",
+        "unauthorized caller cannot retrieve restricted content"
+      ],
+      "human_review": false
+    },
+    {
+      "id": "DM-17",
+      "priority": "critical",
+      "mode": "staging_destructive",
+      "goal": "Pending uploads cannot leak into approved marketing search.",
+      "tools": ["media_upload_asset", "media_search", "media_list_library", "media_list_pending_review"],
+      "assertions": [
+        "new upload appears pending",
+        "new upload is absent from approved search/list before approval"
+      ],
+      "human_review": false
+    },
+    {
+      "id": "DM-20",
+      "priority": "critical",
+      "mode": "staging_fault_injection",
+      "goal": "Vision outage fails closed.",
+      "tools": ["media_evaluate_image_fit"],
+      "setup": "Inject Vision provider timeout/unavailable response.",
+      "assertions": [
+        "fit_grade == 0",
+        "response contains actionable manual-review guidance"
+      ],
+      "human_review": false
+    },
+    {
+      "id": "DM-21",
+      "priority": "high",
+      "mode": "controlled_write",
+      "goal": "Sequential campaign posts use the available creative pool before repeating.",
+      "tools": ["media_find_best_image_for_post", "media_record_usage"],
+      "setup": "Use a dedicated UAT channel and a product family with at least three qualifying creatives. Run ten sequential find -> simulated publish success -> record cycles.",
+      "assertions": [
+        "no creative repeats while a qualifying never-used candidate remains in the returned candidate pool",
+        "after exhaustion repeated creatives follow oldest-last-used preference",
+        "every successful cycle has one corresponding usage row"
+      ],
+      "human_review": true
+    },
+    {
+      "id": "DM-22",
+      "priority": "high",
+      "mode": "production_read_only",
+      "goal": "Mixed product and scene prompt preserves product identity while matching context.",
+      "tools": ["media_find_best_image_for_post"],
+      "input_template": {"post_text": "{{exact_product}} trên cửa chính căn hộ hiện đại, phong cách tối giản", "product_hint": "{{exact_product}}", "channel": "facebook", "exclude_used_within_days": 14, "candidate_count": 6, "min_fit_grade": 2},
+      "assertions": [
+        "best_pick is exact-product safe",
+        "best_pick.fit_grade >= 2",
+        "rationale is consistent with requested scene"
+      ],
+      "human_review": true
+    },
+    {
+      "id": "DM-24",
+      "priority": "critical",
+      "mode": "staging_or_production_observe",
+      "goal": "MCP activity is auditable without persisting sensitive payloads.",
+      "tools": ["media_search", "media_record_usage"],
+      "setup": "Invoke a read tool and a controlled write, then inspect public.mcp_tool_call_log with operational access.",
+      "assertions": [
+        "tool calls are present in audit log",
+        "actor identity is attributable",
+        "raw base64 and sensitive tokens are absent from stored payload",
+        "business call remains successful if audit write is unavailable"
+      ],
+      "human_review": false
+    }
+  ]
+}

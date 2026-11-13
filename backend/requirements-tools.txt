@@ -1,0 +1,6 @@
+# Operator tooling for `scripts/`: migrations, seeding, verification, diagnostics.
+# Never installed into the production worker image -- the Dockerfile copies only
+# `app/` and installs requirements.txt alone.
+-r requirements.txt
+psycopg2-binary
+numpy

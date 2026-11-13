@@ -1,0 +1,10 @@
+# Never copy local credentials or developer artifacts into the worker image.
+.env
+.env.*
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+tests/
+data/
+*.log
