@@ -1,0 +1,420 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand Colors */
+    --verity: #104C87;
+    --verity-hover: #0D3F71;
+    --verity-press: #0A3259;
+    --verity-fg: #104C87;
+    --verity-soft: rgba(16, 76, 135, 0.085);
+    --verity-soft-hi: rgba(16, 76, 135, 0.14);
+    --verity-border: rgba(16, 76, 135, 0.28);
+    --gold: #FFD60D;
+    --gold-ink: #3B2D00;
+
+    /* Neutrals */
+    --paper: #F4F7FB;
+    --surface: #FFFFFF;
+    --surface-2: #EDF2F8;
+    --elevated: #FFFFFF;
+    --inset: #E6EDF5;
+    --hover: rgba(16, 76, 135, 0.055);
+    --active: rgba(16, 76, 135, 0.10);
+    --overlay: rgba(9, 26, 43, 0.42);
+
+    --border-subtle: rgba(16, 76, 135, 0.11);
+    --border: rgba(16, 76, 135, 0.18);
+    --border-strong: rgba(16, 76, 135, 0.30);
+
+    --text-1: #0F2436;
+    /* Secondary labels keep a safe WCAG AA contrast margin on paper/surface. */
+    --text-2: #3F586C;
+    --text-3: #3F586C;
+    --text-disabled: #A6B4C2;
+    --on-verity: #FFFFFF;
+
+    --focus-ring: 0 0 0 3px rgba(16, 76, 135, 0.26);
+
+    /* Semantic States */
+    --ok: #1A7F45;
+    --ok-soft: rgba(26, 127, 69, 0.11);
+    --ok-border: rgba(26, 127, 69, 0.26);
+
+    --warn: #9C560B;
+    --warn-soft: rgba(196, 112, 26, 0.13);
+    --warn-border: rgba(196, 112, 26, 0.30);
+
+    --bad: #B3271B;
+    --bad-soft: rgba(192, 57, 43, 0.11);
+    --bad-border: rgba(192, 57, 43, 0.26);
+
+    --ai: #5D37B0;
+    --ai-soft: rgba(109, 69, 196, 0.12);
+    --ai-border: rgba(109, 69, 196, 0.28);
+
+    --teal: #0B6E62;
+    --teal-soft: rgba(15, 123, 108, 0.11);
+    --teal-border: rgba(15, 123, 108, 0.26);
+
+    --mute: #46596B;
+    --mute-soft: rgba(70, 89, 107, 0.10);
+    --mute-border: rgba(70, 89, 107, 0.22);
+
+    --gold-soft: #FFE97A;
+    --gold-border: rgba(160, 130, 0, 0.42);
+    --on-gold-soft: #3B2D00;
+    --private-bg: #3A4A5A;
+
+    /* AI Learning Loop */
+    --learn: #C2701A;
+    --learn-glow: rgba(194, 112, 26, 0.22);
+
+    --photo-bg: #DCE4EC;
+    --scrim: linear-gradient(to top, rgba(7, 20, 33, 0.88) 0%, rgba(7, 20, 33, 0.44) 46%, rgba(7, 20, 33, 0) 100%);
+
+    /* 4px Grid */
+    --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 24px; --s8: 32px; --s10: 40px; --s12: 48px;
+    --r-xs: 4px; --r-sm: 6px; --r-md: 8px; --r-lg: 10px; --r-xl: 14px; --r-full: 9999px;
+    --ctrl-sm: 30px; --ctrl-md: 36px; --ctrl-lg: 44px;
+    --rail: 236px; --rail-min: 64px; --topbar: 56px; --mobile-nav-height: 64px; --touch-min: 44px;
+    --z-base: 0; --z-topbar: 30; --z-navigation: 40; --z-action-bar: 90; --z-overlay: 100; --z-modal: 110; --z-popover: 120;
+
+    --sh-sm: 0 1px 2px rgba(15, 36, 54, 0.07), 0 1px 3px rgba(15, 36, 54, 0.05);
+    --sh-md: 0 4px 14px rgba(15, 36, 54, 0.10);
+    --sh-pop: 0 12px 34px rgba(15, 36, 54, 0.16), 0 0 0 1px rgba(16, 76, 135, 0.10);
+    --sh-drawer: -18px 0 48px rgba(15, 36, 54, 0.16);
+
+    --fast: 130ms; --base: 190ms; --slow: 280ms;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Motion tokens (transitions-dev scale) */
+    --duration-instant: 100ms;
+    --duration-fast: 150ms;
+    --duration-normal: 200ms;
+    --duration-moderate: 300ms;
+    --duration-slow: 400ms;
+    --duration-deliberate: 600ms;
+
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --ease-decelerate: cubic-bezier(0, 0, 0, 1);
+    --ease-accelerate: cubic-bezier(0.3, 0, 1, 1);
+    --ease-spring-snappy: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring-gentle: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --distance-sm: 8px;
+    --distance-md: 16px;
+    --distance-lg: 24px;
+    --scale-sm: 0.96;
+    --scale-xs: 0.98;
+    --blur-subtle: 2px;
+
+    /* Component Motion Tokens */
+    --drawer-open-dur: 280ms;
+    --drawer-close-dur: 200ms;
+    --drawer-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --toast-open: 320ms;
+    --toast-close: 220ms;
+    --toast-distance: 14px;
+    --toast-scale: 0.96;
+    --toast-blur: 2px;
+    --toast-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+    --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  /* Dark mode */
+  :root[data-theme="dark"],
+  .dark {
+    --verity: #1F73B7;
+    --verity-hover: #2682CC;
+    --verity-press: #175D94;
+    --verity-fg: #6FB6E8;
+    --verity-soft: rgba(46, 134, 200, 0.16);
+    --verity-soft-hi: rgba(46, 134, 200, 0.24);
+    --verity-border: rgba(46, 134, 200, 0.38);
+    --on-verity: #FFFFFF;
+
+    --paper: #0D1B2A;
+    --surface: #122539;
+    --surface-2: #172E45;
+    --elevated: #1C3752;
+    --inset: #0A1622;
+
+    --hover: rgba(147, 197, 240, 0.06);
+    --active: rgba(147, 197, 240, 0.11);
+    --overlay: rgba(3, 10, 18, 0.66);
+
+    --border-subtle: rgba(147, 197, 240, 0.10);
+    --border: rgba(147, 197, 240, 0.17);
+    --border-strong: rgba(147, 197, 240, 0.28);
+
+    --text-1: #E8F1F9;
+    --text-2: #9FB5C9;
+    --text-3: #7891A6;
+    --text-disabled: #4E657A;
+
+    --focus-ring: 0 0 0 3px rgba(46, 134, 200, 0.34);
+
+    --ok: #4FC17A;
+    --ok-soft: rgba(63, 184, 97, 0.15);
+    --ok-border: rgba(63, 184, 97, 0.32);
+
+    --warn: #F0A05A;
+    --warn-soft: rgba(240, 136, 62, 0.16);
+    --warn-border: rgba(240, 136, 62, 0.34);
+
+    --bad: #FF8078;
+    --bad-soft: rgba(242, 85, 85, 0.15);
+    --bad-border: rgba(242, 85, 85, 0.32);
+
+    --ai: #B394F5;
+    --ai-soft: rgba(163, 113, 247, 0.17);
+    --ai-border: rgba(163, 113, 247, 0.36);
+
+    --teal: #5EE0CD;
+    --teal-soft: rgba(45, 212, 191, 0.14);
+    --teal-border: rgba(45, 212, 191, 0.30);
+
+    --mute: #A6BACC;
+    --mute-soft: rgba(166, 186, 204, 0.12);
+    --mute-border: rgba(166, 186, 204, 0.24);
+
+    --gold-soft: #6A5A08;
+    --gold-border: rgba(255, 214, 13, 0.44);
+    --on-gold-soft: #F2E4B0;
+    --private-bg: #4A5F73;
+
+    --learn: #F0A05A;
+    --learn-glow: rgba(240, 160, 90, 0.26);
+    --photo-bg: #1B3149;
+
+    --sh-sm: 0 1px 2px rgba(0, 0, 0, 0.44), 0 1px 3px rgba(0, 0, 0, 0.30);
+    --sh-md: 0 4px 14px rgba(0, 0, 0, 0.46);
+    --sh-pop: 0 12px 34px rgba(0, 0, 0, 0.58), 0 0 0 1px rgba(147, 197, 240, 0.09);
+    --sh-drawer: -18px 0 48px rgba(0, 0, 0, 0.52);
+  }
+
+  html, body {
+    margin: 0;
+    background-color: var(--paper);
+    color: var(--text-1);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html {
+    min-width: 320px;
+    min-height: 100%;
+  }
+
+  body {
+    min-height: 100%;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  button, a, input, textarea, select {
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--verity);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--verity-soft-hi);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+.app-main {
+  min-height: 0;
+  scrollbar-gutter: stable;
+}
+
+@media (max-width: 767px) {
+  .app-main {
+    padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom));
+  }
+}
+
+.skip-link {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  z-index: var(--z-modal);
+  transform: translateY(-180%);
+  border-radius: var(--r-md);
+  background: var(--text-1);
+  color: var(--surface);
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: var(--sh-md);
+  transition: transform var(--fast) var(--ease-out);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.responsive-dialog-content[data-variant='sheet'][data-state='open'] {
+  animation: responsive-sheet-in var(--base) var(--ease-out);
+}
+
+.responsive-dialog-content[data-variant='dialog'][data-state='open'] {
+  animation: responsive-dialog-in var(--base) var(--ease-out);
+}
+
+[data-radix-popper-content-wrapper] {
+  z-index: var(--z-popover) !important;
+}
+
+@keyframes responsive-sheet-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes responsive-dialog-in {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 12px)) scale(0.98); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Filmstrip Custom Scrollbar: 10px height, clearly visible track, easy to grab */
+.filmstrip-scrollbar::-webkit-scrollbar {
+  height: 10px;
+}
+.filmstrip-scrollbar::-webkit-scrollbar-track {
+  background: var(--surface-2);
+  border-radius: 99px;
+  margin: 0 4px;
+}
+.filmstrip-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 99px;
+  border: 2px solid var(--surface-2);
+  background-clip: padding-box;
+}
+.filmstrip-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-3);
+}
+.filmstrip-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) var(--surface-2);
+}
+
+/* ==========================================================================
+   Transitions Dev: Orchestrated Component Transitions
+   ========================================================================== */
+
+/* Drawer backdrop */
+.t-drawer-backdrop {
+  opacity: 0;
+  transition: opacity var(--drawer-open-dur) var(--drawer-ease);
+  will-change: opacity;
+}
+.t-drawer-backdrop.is-open {
+  opacity: 1;
+}
+.t-drawer-backdrop.is-closing {
+  opacity: 0;
+  transition-duration: var(--drawer-close-dur);
+}
+
+/* Drawer panel: enters from right edge smoothly */
+.t-drawer-panel {
+  transform: translateX(100%);
+  opacity: 0;
+  transition:
+    transform var(--drawer-open-dur) var(--drawer-ease),
+    opacity var(--drawer-open-dur) var(--drawer-ease);
+  will-change: transform, opacity;
+}
+.t-drawer-panel.is-open {
+  transform: translateX(0);
+  opacity: 1;
+}
+.t-drawer-panel.is-closing {
+  transform: translateX(100%);
+  opacity: 0;
+  transition-duration: var(--drawer-close-dur);
+}
+
+/* Toast: 22-toast rising from bottom edge with subtle scale & cross-blur */
+.t-toast {
+  opacity: 0;
+  transform: translateY(var(--toast-distance)) scale(var(--toast-scale));
+  filter: blur(var(--toast-blur));
+  will-change: transform, opacity, filter;
+  transition:
+    opacity var(--toast-close) var(--toast-ease),
+    transform var(--toast-close) var(--toast-ease),
+    filter var(--toast-close) var(--toast-ease);
+}
+.t-toast.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition:
+    opacity var(--toast-open) var(--toast-ease),
+    transform var(--toast-open) var(--toast-ease),
+    filter var(--toast-open) var(--toast-ease);
+}
+.t-toast.is-closing {
+  opacity: 0;
+  transform: translateY(var(--toast-distance)) scale(var(--toast-scale));
+  filter: blur(var(--toast-blur));
+  transition:
+    opacity var(--toast-close) var(--toast-ease),
+    transform var(--toast-close) var(--toast-ease),
+    filter var(--toast-close) var(--toast-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-drawer-backdrop,
+  .t-drawer-panel,
+  .t-toast {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+

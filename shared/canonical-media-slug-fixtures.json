@@ -1,0 +1,18 @@
+[
+  {
+    "input": {"brand": "Bear", "sku": "EB-5H15D", "title": "Ấm đun nước Bear 1.5L"},
+    "slug": "bear-eb-5h15d-am-dun-nuoc-1-5l"
+  },
+  {
+    "input": {"id": "292579ed-3717-4581-96f2-9c3c6cd3cd3d", "brand": "Verity", "sku": "Verity C02", "title": "z7684347947726_8e215e16eb2296ee273030c1fb5e8db4.webp", "space": "Cửa chính", "category": "Công trình"},
+    "slug": "verity-c02-cua-chinh"
+  },
+  {
+    "input": {"id": "9b9d7cc0-ba1f-49b3-8596-85f640efaa79", "title": "IMG_9413.jpg", "brand": "EDEN", "sku": "DEMO-007", "suggested_caption": "Khóa cửa thông minh EDEN lắp trên cửa gỗ. Thiết bị hoàn thiện."},
+    "slug": "eden-demo-007-khoa-cua-thong-minh-lap-tren-cua-go"
+  },
+  {
+    "input": {"id": "9b9d7cc0-ba1f-49b3-8596-85f640efaa79", "brand": "", "sku": "", "title": ""},
+    "slug": "9b9d7cc0"
+  }
+]

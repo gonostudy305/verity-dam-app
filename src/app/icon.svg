@@ -1,0 +1,10 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="VerityDAM" shape-rendering="geometricPrecision">
+  <rect width="1024" height="1024" fill="#16417F" />
+  <rect x="730" y="318" width="94" height="398" rx="44" fill="#FFFFFF" />
+  <rect x="420" y="258" width="308" height="528" rx="72" fill="#FFFFFF" />
+  <rect x="462" y="298" width="225" height="446" rx="40" fill="#16417F" />
+  <rect x="196" y="325" width="464" height="435" rx="62" fill="#FFFFFF" />
+  <rect x="236" y="365" width="384" height="355" rx="32" fill="#16417F" />
+  <path d="M236 704 416 442 620 704H553L416 548 324 704Z" fill="#FFFFFF" />
+  <circle cx="531" cy="449" r="46" fill="#FFD60D" />
+</svg>

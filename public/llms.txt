@@ -1,0 +1,14 @@
+﻿# VerityDAM Platform
+
+> VerityDAM là nền tảng quản lý tài sản số (DAM) tích hợp AI: tìm kiếm ảnh, kiểm chứng SKU dựa trên bằng chứng và quy trình duyệt ảnh có con người. Kho ảnh hiện tại phục vụ sản phẩm gia dụng Lock&Lock (LocknLock).
+
+## Khả năng chính
+- **Thư viện:** tìm kiếm ảnh theo từ khóa và SKU, lọc theo loại ảnh, xem chi tiết và metadata.
+- **Upload và phân tích AI:** tải ảnh lên, hệ thống tạo caption, metadata và đề xuất SKU từ bằng chứng nhìn thấy trên ảnh. Không đủ bằng chứng thì để trống và chuyển người duyệt.
+- **Hàng chờ duyệt:** người duyệt kiểm tra, chỉnh sửa và quyết định trước khi ảnh được xuất bản.
+- **Ảnh trùng:** phát hiện ảnh trùng và gần trùng để giữ một bản chuẩn, không xóa tự động.
+- **MCP:** truy cập có kiểm soát cho các agent AI qua máy chủ MCP.
+
+## Nguyên tắc dữ liệu
+- AI không được đoán SKU, thương hiệu hay thuộc tính; thiếu bằng chứng thì từ chối hoặc gắn cờ để người duyệt.
+- Hệ thống là nội bộ: đăng nhập bằng tài khoản do quản trị viên cấp.
