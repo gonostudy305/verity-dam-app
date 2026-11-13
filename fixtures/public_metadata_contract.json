@@ -1,0 +1,12 @@
+{
+  "creator": "VerityDAM Platform",
+  "credit": "VerityDAM Platform",
+  "copyright_template": "© {year} VerityDAM Platform. All rights reserved.",
+  "software": "VerityDAM Studio v2.0",
+  "default_ai_source_type": "https://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia",
+  "target_widths": [480, 800, 1600],
+  "webp_quality": 82,
+  "webp_method": 4,
+  "pipeline_version": "v2.2",
+  "metadata_schema_version": 1
+}
