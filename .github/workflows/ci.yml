@@ -114,5 +114,6 @@ jobs:
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/0001_postgres_native_prerequisites.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/0002_better_auth.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/0033_auth_audit_events.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/0053_oauth_provider.sql
       - name: Run real auth integration test
         run: npm run test:auth-integration
