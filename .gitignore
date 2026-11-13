@@ -1,0 +1,121 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+/playwright-report/
+/test-results/
+
+# Next.js build output
+/.next/
+/.next-prod/
+/out/
+tsconfig.tsbuildinfo
+
+# Production
+/build
+
+# Environment variables & secrets
+.env
+.env*.local
+.env.*
+!.env.example
+!.env.native.example
+!.env.server.example
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+/logs/
+
+# OS Files
+.DS_Store
+*.pem
+Thumbs.db
+
+# Workspace / temp files
+*.zip
+/scratch/
+/prototypes/extracted_prototype/
+/prototypes/*.zip
+/.claude/*
+!/.claude/skills/
+.next-recovery*
+*.tsbuildinfo
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+/backend/data/local_references.json
+
+# Temp & logs
+/logs/*
+!/logs/.gitkeep
+/scratch/*
+!/scratch/.gitkeep
+reembed_assets_*.jsonl
+graphify-out/.graphify_*
+graphify-out/cache/
+graphify-out/.graphify_root
+graphify-out/.vocab.txt
+graphify-out/2026-*/
+graphify-out/reflections/
+graphify-out/memory/
+
+# Models
+*.onnx
+*.onnx.data
+models/
+backend/app/models/
+backend/benchmarks/models/
+/backend/benchmarks/siglip2/p2/review_runtime/
+/backend/benchmarks/siglip2/p2/corpora/.history/
+
+# SigLIP2 staging: large downloaded/exported model artifacts, never committed
+backend/_artifacts/
+*.parquet
+backend/benchmarks/siglip2/woocommerce_catalog/checkpoint.db
+backend/benchmarks/siglip2/woocommerce_catalog/*.parquet
+
+
+# Google Drive importer secrets & state
+backend/importers/google_drive/credentials*.json
+backend/importers/google_drive/token*.json
+backend/importers/google_drive/*.sqlite3*
+backend/importers/google_drive/*.db
+backend/importers/google_drive/reports/
+backend/importers/google_drive/data/
+
+# WordPress importer runtime state
+backend/importers/wordpress/*.sqlite3
+backend/importers/wordpress/*_checkpoint.json
+
+# Local artifacts & tool outputs
+repomix-output.xml
+AGENTS.md
+
+.agents/
+
+# AI Agent transcripts & sessions (contains sensitive env/session logs)
+/docs/sessions/
+VERITY_DAM_FULL_SESSION_TRANSCRIPT.md
+
+# Generated database dump & large ingestion migrations
+/backend/scripts/sql/

@@ -1,0 +1,53 @@
+{
+  "name": "verity-dam",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "setup": "node scripts/setup-dev.mjs",
+    "dev": "node scripts/dev-local.mjs",
+    "provision:test-accounts": "node scripts/provision-system-test-accounts.mjs",
+    "build": "next build",
+    "start": "node scripts/start-local.mjs",
+    "lint": "next lint",
+    "review-assist": "node scripts/review-assist.mjs",
+    "test:review-assist": "node --test scripts/review-assist-policy.test.mjs",
+    "test:e2e": "playwright test",
+    "test:auth-integration": "tsx --test src/lib/server/auth-integration.test.ts",
+    "test:review-queue": "tsx --test src/lib/server/review-queue-cursor.test.ts",
+    "test:vision-config": "tsx --test src/lib/server/vision-config.test.ts",
+    "test": "tsx --test src/lib/server/image-convert.test.ts src/lib/server/product-image-extract.test.ts src/lib/server/url-fetch-guard.test.ts src/lib/image-slug.test.ts src/lib/sku-context.test.ts src/lib/reference-role.test.ts src/lib/creative.test.ts src/lib/creative-generation.test.ts src/lib/server/native-media-attach.test.ts src/lib/server/native-media-search.test.ts src/lib/image-object.test.ts src/lib/server/wordpress.test.ts src/lib/media-api.test.ts src/lib/client/image-metadata.test.ts src/lib/server/embedding-client.test.ts src/lib/server/media-mapper.test.ts src/lib/server/media-archive.test.ts src/lib/server/search-intelligence-semantic.test.ts src/lib/server/search-intelligence-gateway.test.ts src/lib/server/search-intelligence-vn.test.ts src/lib/server/search-intelligence-exact.test.ts src/lib/server/search-intelligence-lexical.test.ts src/lib/server/search-intelligence-fusion.test.ts src/lib/server/search-intelligence-recovery.test.ts src/lib/server/search-intelligence-fuzzy.test.ts src/lib/server/search-intelligence-route-policy.test.ts src/lib/server/native-search-intelligence.test.ts src/lib/server/search-intelligence-plan.test.ts src/lib/server/native-media-constraints.test.ts src/lib/server/native-synonyms.test.ts src/lib/server/search-intelligence-shadow.test.ts src/lib/server/search-catalog-resolver.test.ts src/lib/server/search-catalog-db.test.ts src/lib/server/search-intelligence-canary.test.ts src/lib/server/search-intelligence-mmr.test.ts src/app/api/internal/media-search/route.test.ts src/lib/server/agent-view.test.ts src/lib/server/search-config.test.ts src/lib/server/media-select.test.ts src/lib/server/upload-context-config.test.ts src/components/layout/navigation.test.ts src/lib/server/r2-key.test.ts src/lib/server/dedup-clusters.test.ts src/components/duplicates/tier-copy.test.ts src/lib/server/cluster-resolve.test.ts src/lib/server/media-soft-delete.test.ts src/app/api/dedup/clusters/route.test.ts src/lib/server/internal-test-accounts.test.ts src/lib/server/auth-provisioning.test.ts src/lib/server/auth-audit.test.ts src/lib/server/auth-integration.test.ts src/lib/server/asset-reports.test.ts src/hooks/useImageExport.test.ts src/app/api/features/route.test.ts src/app/api/catalog/search/route.test.ts src/lib/server/taxonomy.test.ts src/hooks/useBatchGroups.test.ts src/hooks/useBatchSelection.test.ts src/components/review/review-card-signals.test.ts src/lib/server/review-queue-cursor.test.ts src/hooks/useJustifiedLayout.test.ts src/components/upload/folderIngest.test.ts src/lib/ingest-batch.test.ts src/lib/clsx.test.ts src/lib/upload-status.test.ts src/lib/server/native-media-order.test.ts src/lib/mcp-catalog.test.ts src/lib/mcp-oauth.test.ts src/lib/server/mcp-admin.test.ts src/lib/server/vision-config.test.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1117.0",
+    "@aws-sdk/s3-request-presigner": "^3.1117.0",
+    "@better-auth/mcp": "1.7.1",
+    "@better-auth/oauth-provider": "1.7.1",
+    "@radix-ui/react-dialog": "^1.1.23",
+    "@radix-ui/react-popover": "^1.1.23",
+    "@radix-ui/react-tabs": "^1.1.21",
+    "better-auth": "^1.7.1",
+    "lucide-react": "^0.453.0",
+    "next": "^15.5.25",
+    "pg": "^8.23.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sharp": "^0.35.4",
+    "tailwind-merge": "^2.5.4"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^20.16.11",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^3.4.14",
+    "tsx": "^4.23.12",
+    "typescript": "^5.6.3"
+  },
+  "overrides": {
+    "postcss": "$postcss"
+  }
+}

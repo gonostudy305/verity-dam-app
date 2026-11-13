@@ -1,0 +1,30 @@
+.env
+.env.*
+!.env.example
+.git
+.next
+node_modules
+coverage
+*.log
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+
+# The root image is the Next.js web app. Backend runtime images use
+# backend/.dockerignore and their own build context.
+backend
+.claude
+.vscode
+.pytest_cache
+deploy
+docs
+e2e
+fixtures
+graphify-out
+logs
+plans
+playwright-report
+prototypes
+scratch
+supabase
+test-results

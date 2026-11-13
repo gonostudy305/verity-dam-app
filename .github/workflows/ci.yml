@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, feat/*, feature/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-frontend:
+    name: Frontend & API Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Run tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+
+  responsive-e2e:
+    name: Responsive E2E matrix
+    needs: test-frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run responsive E2E matrix
+        run: npm run test:e2e -- --project="chromium*" --workers=2
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: responsive-playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 1
+          if-no-files-found: ignore
+
+  test-backend:
+    name: Python Backend Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest psycopg2-binary python-dotenv
+          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+          if [ -f backend/requirements-test.txt ]; then pip install -r backend/requirements-test.txt; fi
+          if [ -f backend/requirements-mcp.txt ]; then pip install -r backend/requirements-mcp.txt; fi
+          if [ -f backend/requirements-siglip2-staging.txt ]; then pip install -r backend/requirements-siglip2-staging.txt httpx; fi
+      - name: Run Python unit tests
+        run: |
+          cd backend
+          PYTHONPATH=. python -m unittest discover -s tests
+
+  auth-integration:
+    name: Better Auth PostgreSQL integration
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: verity
+          POSTGRES_PASSWORD: verity_ci_only
+          POSTGRES_DB: verity_dam
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U verity -d verity_dam"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://verity:verity_ci_only@127.0.0.1:5432/verity_dam
+      BETTER_AUTH_SECRET: verity-ci-only-auth-secret-please-do-not-use-in-production
+      BETTER_AUTH_URL: http://127.0.0.1:3000
+      VERITY_TRUSTED_ORIGINS: http://127.0.0.1:3000
+      VERITY_AUTH_INTEGRATION_REQUIRED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Apply auth migrations to ephemeral PostgreSQL
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/0001_postgres_native_prerequisites.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/0002_better_auth.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/0033_auth_audit_events.sql
+      - name: Run real auth integration test
+        run: npm run test:auth-integration
